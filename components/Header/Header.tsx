@@ -19,6 +19,11 @@ export default function Header() {
               Notes
             </Link>
           </li>
+          <li>
+            <Link href="/filter/All" aria-label="Filter">
+              Filter
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

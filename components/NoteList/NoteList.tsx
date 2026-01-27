@@ -7,9 +7,9 @@ import Link from 'next/link';
 
 interface NoteListProps {
   noteList: Note[];
-  setIsModal: (type: boolean) => void;
-  setTypeModal: (type: 'form' | 'error' | 'create' | 'delete') => void;
-  setMessage: (mes: Note) => void;
+  setIsModal?: (type: boolean) => void;
+  setTypeModal?: (type: 'form' | 'error' | 'create' | 'delete') => void;
+  setMessage?: (mes: Note) => void;
 }
 
 export default function NoteList({
@@ -27,9 +27,15 @@ export default function NoteList({
     },
     onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      setIsModal(true);
-      setTypeModal('delete');
-      setMessage(data);
+      if (setIsModal) {
+        setIsModal(true);
+      }
+      if (setTypeModal) {
+        setTypeModal('delete');
+      }
+      if (setMessage) {
+        setMessage(data);
+      }
     },
   });
 

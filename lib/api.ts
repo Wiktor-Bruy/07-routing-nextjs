@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { type Note, type NewNote } from '@/types/note';
+import { type Note, type NewNote, type FetchTagNote } from '@/types/note';
 
 interface Answer {
   notes: Note[];
@@ -8,6 +8,31 @@ interface Answer {
 }
 
 const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+
+export async function fetchFilterNotes(tag: FetchTagNote): Promise<Note[]> {
+  if (tag === 'All') {
+    const res = await axios.get<Answer>(
+      `https://notehub-public.goit.study/api/notes?&perPage=20`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data.notes;
+  }
+  const res = await axios.get<Answer>(
+    `https://notehub-public.goit.study/api/notes?tag=${tag}&&perPage=20`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data.notes;
+}
 
 export async function fetchNotes(
   page: number,

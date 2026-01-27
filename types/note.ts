@@ -1,4 +1,12 @@
-type TagNote = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
+type TagNote = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+
+export type FetchTagNote =
+  | 'Todo'
+  | 'Work'
+  | 'Personal'
+  | 'Meeting'
+  | 'Shopping'
+  | 'All';
 
 export interface Note {
   content: string;
