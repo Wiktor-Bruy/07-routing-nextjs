@@ -9,10 +9,14 @@ interface Answer {
 
 const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
-export async function fetchFilterNotes(tag: FetchTagNote): Promise<Note[]> {
-  if (tag === 'All') {
+export async function fetchFilterNotes(
+  tag: FetchTagNote,
+  page: number,
+  search: string
+): Promise<Answer> {
+  if (tag === 'All' && !search) {
     const res = await axios.get<Answer>(
-      `https://notehub-public.goit.study/api/notes?&perPage=20`,
+      `https://notehub-public.goit.study/api/notes?&page=${page}&perPage=12`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -20,10 +24,37 @@ export async function fetchFilterNotes(tag: FetchTagNote): Promise<Note[]> {
       }
     );
 
-    return res.data.notes;
+    return res.data;
   }
+
+  if (tag !== 'All' && !search) {
+    const res = await axios.get<Answer>(
+      `https://notehub-public.goit.study/api/notes?tag=${tag}&page=${page}&perPage=12`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  }
+
+  if (tag === 'All' && search) {
+    const res = await axios.get<Answer>(
+      `https://notehub-public.goit.study/api/notes?search=${search}&page=${page}&perPage=12`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  }
+
   const res = await axios.get<Answer>(
-    `https://notehub-public.goit.study/api/notes?tag=${tag}&&perPage=20`,
+    `https://notehub-public.goit.study/api/notes?search=${search}&tag=${tag}&page=${page}&perPage=12`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,7 +62,7 @@ export async function fetchFilterNotes(tag: FetchTagNote): Promise<Note[]> {
     }
   );
 
-  return res.data.notes;
+  return res.data;
 }
 
 export async function fetchNotes(

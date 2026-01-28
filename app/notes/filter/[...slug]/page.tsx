@@ -1,34 +1,35 @@
+import {
+  QueryClient,
+  HydrationBoundary,
+  dehydrate,
+} from '@tanstack/react-query';
+
+import { FetchTagNote } from '@/types/note';
+import { fetchFilterNotes } from '@/lib/api';
+import NotesClient from './Notes.client';
+
 import css from './page.module.css';
 
-import Link from 'next/link';
-
-import { type FetchTagNote } from '@/types/note';
-import { fetchFilterNotes } from '@/lib/api';
-
-interface FilterNotesProps {
+interface NotesProps {
   params: Promise<{ slug: string[] }>;
 }
 
-export default async function FilterNotes({ params }: FilterNotesProps) {
+export default async function Notes({ params }: NotesProps) {
+  const queryClient = new QueryClient();
+
   const { slug } = await params;
   const tag = slug[0] as FetchTagNote;
-  const noteList = await fetchFilterNotes(tag);
+
+  await queryClient.prefetchQuery({
+    queryKey: ['notes', tag, 1, ''],
+    queryFn: () => fetchFilterNotes(tag, 1, ''),
+  });
 
   return (
-    <ul className={css.list}>
-      {noteList.map(note => (
-        <li key={note.id} className={css.listItem}>
-          <h2 className={css.title}>{note.title}</h2>
-          <p className={css.content}>{note.content}</p>
-          <div className={css.footer}>
-            <span className={css.tag}>{note.tag}</span>
-            <Link className={css.link} href={`/notes/${note.id}`}>
-              View details
-            </Link>
-          </div>
-        </li>
-      ))}
-      {noteList.length === 0 && <p>There are no notes for this tag...</p>}
-    </ul>
+    <main className={css.main}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <NotesClient />
+      </HydrationBoundary>
+    </main>
   );
 }

@@ -20,16 +20,18 @@ export default function Modal({ children, onClose }: ModalProps) {
     }
     if (onClose) {
       onClose();
+    } else {
+      router.back();
     }
-    router.back();
   }
   useEffect(() => {
     function closeModal(ev: KeyboardEvent) {
       if (ev.key === 'Escape') {
         if (onClose) {
           onClose();
+        } else {
+          router.back();
         }
-        router.back();
       }
     }
     document.addEventListener('keydown', closeModal);
