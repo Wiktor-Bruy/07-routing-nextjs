@@ -40,6 +40,9 @@ export default function NotePreview({ id }: NotePreviewProps) {
     return (
       <Modal>
         <p className={css.content}>{error.message}</p>
+        <button className={css.backBtn} onClick={goBack}>
+          Go back
+        </button>
       </Modal>
     );
   } else {
