@@ -1,40 +1,28 @@
 import css from './default.module.css';
 
+import { FetchTagNote } from '@/types/note';
+
 import Link from 'next/link';
 
 export default function Sidebar() {
+  const tags: FetchTagNote[] = [
+    'all',
+    'Todo',
+    'Work',
+    'Personal',
+    'Meeting',
+    'Shopping',
+  ];
+
   return (
     <ul className={css.menuList}>
-      <li className={css.menuItem}>
-        <Link href={`/notes/filter/All`} className={css.menuLink}>
-          All notes
-        </Link>
-      </li>
-      <li className={css.menuItem}>
-        <Link href={`/notes/filter/Todo`} className={css.menuLink}>
-          Todo
-        </Link>
-      </li>
-      <li className={css.menuItem}>
-        <Link href={`/notes/filter/Work`} className={css.menuLink}>
-          Work
-        </Link>
-      </li>
-      <li className={css.menuItem}>
-        <Link href={`/notes/filter/Personal`} className={css.menuLink}>
-          Personal
-        </Link>
-      </li>
-      <li className={css.menuItem}>
-        <Link href={`/notes/filter/Meeting`} className={css.menuLink}>
-          Meeting
-        </Link>
-      </li>
-      <li className={css.menuItem}>
-        <Link href={`/notes/filter/Shopping`} className={css.menuLink}>
-          Shopping
-        </Link>
-      </li>
+      {tags.map((el, index) => (
+        <li key={index} className={css.menuItem}>
+          <Link href={`/notes/filter/${el}`} className={css.menuLink}>
+            {`${el === 'all' ? 'All notes' : el}`}
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 }

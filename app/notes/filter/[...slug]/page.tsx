@@ -28,7 +28,7 @@ export default async function Notes({ params }: NotesProps) {
   return (
     <main className={css.main}>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <NotesClient />
+        <NotesClient tag={tag} />
       </HydrationBoundary>
     </main>
   );

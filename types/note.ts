@@ -6,7 +6,7 @@ export type FetchTagNote =
   | 'Personal'
   | 'Meeting'
   | 'Shopping'
-  | 'All';
+  | 'all';
 
 export interface Note {
   content: string;

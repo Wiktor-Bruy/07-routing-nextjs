@@ -8,7 +8,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { fetchFilterNotes } from '@/lib/api';
 import { useDebouncedCallback } from 'use-debounce';
-import { useParams } from 'next/navigation';
 
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
@@ -19,15 +18,16 @@ import CreateMessage from '@/components/CreateMessage/CreateMessage';
 
 type Modal = 'form' | 'error' | 'create' | 'delete';
 
-export default function NotesClient() {
+interface NotesClientProps {
+  tag: FetchTagNote;
+}
+
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [isModal, setIsModal] = useState(false);
   const [word, setWord] = useState('');
   const [typeModal, setTypeModal] = useState<Modal>('form');
   const [message, setMessage] = useState<Note | null>(null);
-
-  const { slug } = useParams<{ slug: string[] }>();
-  const tag = slug[0] as FetchTagNote;
 
   const { data } = useQuery({
     queryKey: ['notes', tag, page, word],
