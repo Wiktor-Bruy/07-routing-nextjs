@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ModalProps {
-  onClose?: () => void;
+  onClose: () => void;
   children: React.ReactNode;
 }
 
@@ -18,20 +18,12 @@ export default function Modal({ children, onClose }: ModalProps) {
     if (ev.target != ev.currentTarget) {
       return;
     }
-    if (onClose) {
-      onClose();
-    } else {
-      router.back();
-    }
+    onClose();
   }
   useEffect(() => {
     function closeModal(ev: KeyboardEvent) {
       if (ev.key === 'Escape') {
-        if (onClose) {
-          onClose();
-        } else {
-          router.back();
-        }
+        onClose();
       }
     }
     document.addEventListener('keydown', closeModal);

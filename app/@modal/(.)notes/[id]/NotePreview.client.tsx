@@ -32,13 +32,13 @@ export default function NotePreview({ id }: NotePreviewProps) {
 
   if (isLoading) {
     return (
-      <Modal>
+      <Modal onClose={goBack}>
         <p className={css.content}>Note is loading...</p>
       </Modal>
     );
   } else if (isError) {
     return (
-      <Modal>
+      <Modal onClose={goBack}>
         <p className={css.content}>{error.message}</p>
         <button className={css.backBtn} onClick={goBack}>
           Go back
@@ -47,7 +47,7 @@ export default function NotePreview({ id }: NotePreviewProps) {
     );
   } else {
     return (
-      <Modal>
+      <Modal onClose={goBack}>
         {note && (
           <div className={css.container}>
             <div className={css.item}>
